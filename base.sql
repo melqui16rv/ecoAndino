@@ -3,11 +3,33 @@
 -- Sistema de Puntos de Reciclaje y Categorías de Materiales
 -- ============================================================================
 
--- Eliminar tablas si existen (para recrear limpiamente)
+-- Eliminar tablas y tipos si existen (para recrear limpiamente)
 DROP TABLE IF EXISTS punto_materiales CASCADE;
 DROP TABLE IF EXISTS materiales CASCADE;
 DROP TABLE IF EXISTS puntos_reciclaje CASCADE;
 DROP TABLE IF EXISTS categorias CASCADE;
+
+-- Eliminar tipos ENUM si existen
+DROP TYPE IF EXISTS tipo_instalacion_enum CASCADE;
+DROP TYPE IF EXISTS estado_punto_enum CASCADE;
+
+-- ============================================================================
+-- TIPOS ENUM PERSONALIZADOS PARA POSTGRESQL
+-- ============================================================================
+CREATE TYPE tipo_instalacion_enum AS ENUM (
+    'centro_acopio', 
+    'punto_limpio', 
+    'estacion_reciclaje', 
+    'punto_movil', 
+    'contenedor_publico'
+);
+
+CREATE TYPE estado_punto_enum AS ENUM (
+    'activo', 
+    'inactivo', 
+    'mantenimiento', 
+    'temporalmente_cerrado'
+);
 
 -- ============================================================================
 -- TABLA: categorias
@@ -61,8 +83,7 @@ CREATE TABLE puntos_reciclaje (
     codigo_postal VARCHAR(10),
     latitud DECIMAL(10, 8) NOT NULL,
     longitud DECIMAL(11, 8) NOT NULL,
-    tipo_instalacion ENUM('centro_acopio', 'punto_limpio', 'estacion_reciclaje', 'punto_movil', 'contenedor_publico') 
-        DEFAULT 'centro_acopio',
+    tipo_instalacion tipo_instalacion_enum DEFAULT 'centro_acopio',
     horario_apertura TIME,
     horario_cierre TIME,
     dias_servicio VARCHAR(100) DEFAULT 'Lunes,Martes,Miércoles,Jueves,Viernes,Sábado',
@@ -72,7 +93,7 @@ CREATE TABLE puntos_reciclaje (
     capacidad_estimada VARCHAR(50), -- Descripción de capacidad
     instrucciones_acceso TEXT, -- Cómo llegar o instrucciones especiales
     foto_url VARCHAR(500), -- URL de foto del punto
-    estado ENUM('activo', 'inactivo', 'mantenimiento', 'temporalmente_cerrado') DEFAULT 'activo',
+    estado estado_punto_enum DEFAULT 'activo',
     fecha_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     fecha_actualizacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
