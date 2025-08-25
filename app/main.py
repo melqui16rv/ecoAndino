@@ -34,7 +34,6 @@ def create_app() -> FastAPI:
                 "materiales": "/api/v1/materiales",
                 "puntos_reciclaje": "/api/v1/puntos-reciclaje",
                 "buscar_puntos_cercanos": "/api/v1/puntos-reciclaje/cercanos?lat={lat}&lng={lng}&radio={km}",
-                "test_db": "/api/v1/database/test",
             },
         }
 
