@@ -75,7 +75,9 @@ class CategoriaRepository:
                 f"Error al obtener categoría con ID {categoria_id}: {str(e)}"
             )
 
-    def create_categoria(self, categoria_data: Dict[str, Any]) -> CategoriaResponse:
+    def create_categoria(
+        self, categoria_data: Dict[str, Any]
+    ) -> Optional[CategoriaResponse]:
         """Crear una nueva categoría"""
         try:
             consulta = """
